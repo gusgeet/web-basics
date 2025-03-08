@@ -17,19 +17,20 @@
     </section>
     <section>
       <h2>Servicios</h2>
-      <ul>
+      <ul style="display: flex; flex-direction: column; gap: 20px;">
         <!-- aca aplicamos la funcion y pasamos el objeto en si para obtener su id -->
-        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio1">Servicio 1</li>
-        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio2">Servicio 2</li>
-        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio3">Servicio 3</li>
+        <li style="padding: 10px; border-radius: 12px;" onclick="aplicarColorSegunElemento(this)" id="Servicio1">Servicio 1</li>
+        <li style="padding: 10px; border-radius: 12px;" onclick="aplicarColorSegunElemento(this)" id="Servicio2">Servicio 2</li>
+        <li style="padding: 10px; border-radius: 12px;" onclick="aplicarColorSegunElemento(this)" id="Servicio3">Servicio 3</li>
       </ul>
     </section>
     <section>
-      <h2>Contacto</h2>
+      <h2 onclick="aplicarColorSegunElemento(this)" id="Servicio">Contacto</h2>
       <form>
-        <input type="text" placeholder="Tu nombre" />
-        <input type="email" placeholder="Tu correo" />
-        <button type="submit">Enviar</button>
+        <!-- aplico un cambio del texto cuando sacas el foco del elemento -->
+        <input onblur="aplicarJodaAlUsuario(this, 6)" type="text" placeholder="Tu nombre" />
+        <input onblur="aplicarJodaAlUsuario(this, 12)" type="email" placeholder="Tu correo" />
+        <button type="button" onclick="aplicarColorEnGeneralALosServicios()">Enviar</button>
       </form>
     </section>
     <footer>
@@ -42,30 +43,107 @@
     //busco el elemento a traves de su id. tambien se puede buscar por su clase, o por sus tags. 
     //si no es por id, la obtencion devuelve ELEMENTOS, no uno solo (recordá que en el dom solo puede/deberia existir un elemento por id, es decir q son irrepetibles)
     //fijate que dice get element, y no get elementS como los otros ejemplos
+    //en los otros casos, lo que podrias hacer es un array de elementos y trabajar sobre ellos, pero eso lo vemos despues
     let elemento = document.getElementById(id)
     //let elemento = document.getElementsByClassName(id)
     //let elemento = document.getElementsByTagName(id)
     if (elemento) {
+        //si el elemento es valido, le aplico una transicion al sombreado a traves de css establecido por js, y un color mas abajo
         elemento.style.transition = "box-shadow 0.5s ease-in-out";
         elemento.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.8)"; 
         // Removemos la iluminación después de 2 segundos
         setTimeout(() => {
-            elemento.style.boxShadow = "none";
+            elemento.style.boxShadow = "";
         }, 2000);
     }
   }
 
-  function aplicarServicioSegunNumero(element) {
+  function aplicarJodaAlUsuario(elemento, longitud) {
+    //accedemos a la propiedad value del texto, y le aplicamos el cambio de texto (puede ser un texto fijo pero en mi caso decidi hincharle las pelotas al usuario poniendole cualquier cosa)
+    elemento.value = generarTextoAleatorio(longitud)
+  }
+
+  function generarTextoAleatorio(longitud) {
+    let texto = "";
+    //aca generamos un texto aleatorio para hincharle las pelotas al usuario nada mas, cosa q cada vez que escriba y salga del foco del campo de texto, le cambie las cosas
+    for (let i = 0; i < longitud; i++) {
+      //buscamos un codigo ascii al azar, generamos el texto sobre eso, y lo devolvemos
+        let codigoAscii = Math.random() < 0.5 
+            ? Math.floor(Math.random() * 26) + 65  
+            : Math.floor(Math.random() * 26) + 97; 
+
+        texto += String.fromCharCode(codigoAscii);
+    }
+    return texto;
+}
+
+
+  function aplicarColorSegunElemento(element) {
     console.log(element)
     //al pasar el objeto, accedo a su propiedad id
     let idDelElemento = element.id
+    //tambien podemos solamente pasar el id, en lugar del elemento y trabajariamos como en la linea 46: buscamos el elemento por el id
     console.log(idDelElemento)
     //quiero obtener el numero y en base a eso preparar un color aleatorio en otra funcion
     //para eso, voy a limpiar el id sacandole el prefijo Servicio y dejando solo el numero, y lo convierto a numero (acordate que es una string aca)
+    //parseInt es una funcion que devuelve en este caso un entero sobre un texto q le pases. existe lo mismo para numeros con coma (parseFloat)
     let number = parseInt(idDelElemento.replace("Servicio", ""))
+    //reviso que sea correctamente un numero verificadndo su tipo
+    //si no es un numero valido (como en el click de Contacto), va a figurar NaN (not a number, que no es un numero valido)
     console.log(typeof(number))
+    //un chiste malisimo de javascript: el tipo de nan, es un numero 
+    console.log('el tipo de Nan:' + typeof(NaN))
+    aplicarSombraDeColorAElemento(element, number)
   }
+
+  function aplicarSombraDeColorAElemento(elemento, numero) {
+    //funcion sencilla de javascript que trabaja con un switch
+    //si la propiedad de sombra no existe (nos fijamos el falsy de la propiedad), le aplicamos la sombra. caso contrario, lo seteamos a un string vacio, que es un falsy tmb
+    //en javascript, un falsy puede ser: 0, '', null, undefined, o la longitud de un array vacio (que tambien es 0)
+    //por eso, aplica la primera vez y las posteriores: porq inicialmente la propiedad ni existe, y despues es una string vacia => ambas situaciones es falsy
+    console.log(numero)
+    switch(numero) {
+      case 1:
+        if(!elemento.style.boxShadow)
+          elemento.style.boxShadow = "0 0 20px rgba(80, 80, 0, 0.8)"; 
+        else 
+          elemento.style.boxShadow = ''
+        break;
+      case 2:
+        if(!elemento.style.boxShadow)
+            elemento.style.boxShadow = "0 0 20px rgba(160, 160, 0, 0.8)";
+        else 
+          elemento.style.boxShadow = '' 
+        break;
+      case 3:
+        if(!elemento.style.boxShadow)
+          elemento.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.8)"; 
+        else 
+            elemento.style.boxShadow = ''
+        break;
+      default:
+      if(!elemento.style.boxShadow)
+          elemento.style.boxShadow = "0 0 20px rgba(123, 234, 55, 0.8)"; 
+        else 
+            elemento.style.boxShadow = ''
+        break;
+    }
+  }
+
+  function aplicarColorEnGeneralALosServicios() {
+    //busco todos los elementos de la etiqueta li, genero un array para volverlos iterables, y sobre eso, aplico la funcion de cambiarles el color
+    let elementos = document.getElementsByTagName('li')
+    let arrayDeElementos = Array.from(elementos)
+    for(let i = 0; i < arrayDeElementos.length;i++) {
+      aplicarSombraDeColorAElemento(arrayDeElementos[i], i)
+    }
+  }
+
 </script>
 <style>
-
+  /* al cuerpo entero, le aplico una propiedad que impide seleccionar el texto */
+  body {
+    user-select: none;
+  }
 </style>
+
