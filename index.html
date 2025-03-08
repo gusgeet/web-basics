@@ -1,0 +1,71 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio de pruebas</title>
+  </head>
+  <body>
+    <!-- en el header aplicamos la funcion al entrar al elemento -->
+    <header id="header" onmouseenter="iluminarElemento('header')">
+      <h1>Bienvenido a Nuestra Página</h1>
+      <p>Descubre lo que tenemos para ofrecerte</p>
+    </header>
+    <!-- en el section aplicamos la funcion al hacer click -->
+    <section id="section" onclick="iluminarElemento('section')">
+      <h2>Sobre Nosotros</h2>
+      <p>Somos una empresa dedicada a...</p>
+    </section>
+    <section>
+      <h2>Servicios</h2>
+      <ul>
+        <!-- aca aplicamos la funcion y pasamos el objeto en si para obtener su id -->
+        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio1">Servicio 1</li>
+        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio2">Servicio 2</li>
+        <li onclick="aplicarServicioSegunNumero(this)" id="Servicio3">Servicio 3</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Contacto</h2>
+      <form>
+        <input type="text" placeholder="Tu nombre" />
+        <input type="email" placeholder="Tu correo" />
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+    <footer>
+      <p>&copy; 2025 Todos los derechos reservados</p>
+    </footer>
+  </body>
+</html>
+<script>
+  function iluminarElemento(id) {
+    //busco el elemento a traves de su id. tambien se puede buscar por su clase, o por sus tags. 
+    //si no es por id, la obtencion devuelve ELEMENTOS, no uno solo (recordá que en el dom solo puede/deberia existir un elemento por id, es decir q son irrepetibles)
+    //fijate que dice get element, y no get elementS como los otros ejemplos
+    let elemento = document.getElementById(id)
+    //let elemento = document.getElementsByClassName(id)
+    //let elemento = document.getElementsByTagName(id)
+    if (elemento) {
+        elemento.style.transition = "box-shadow 0.5s ease-in-out";
+        elemento.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.8)"; 
+        // Removemos la iluminación después de 2 segundos
+        setTimeout(() => {
+            elemento.style.boxShadow = "none";
+        }, 2000);
+    }
+  }
+
+  function aplicarServicioSegunNumero(element) {
+    console.log(element)
+    //al pasar el objeto, accedo a su propiedad id
+    let idDelElemento = element.id
+    console.log(idDelElemento)
+    //quiero obtener el numero y en base a eso preparar un color aleatorio en otra funcion
+    //para eso, voy a limpiar el id sacandole el prefijo Servicio y dejando solo el numero, y lo convierto a numero (acordate que es una string aca)
+    let number = parseInt(idDelElemento.replace("Servicio", ""))
+    console.log(typeof(number))
+  }
+</script>
+<style>
+
+</style>
