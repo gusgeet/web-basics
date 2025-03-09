@@ -145,5 +145,63 @@
   body {
     user-select: none;
   }
+
+  /* display flex permite establecer el orden de los elementos (flex-direction), la alineacion de los elementos (align-items), y la justificacion del espacio entre los elementos (justify-content) */
+  #header {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  /* display grid permite trabajar con una disposicion estilo grilla, similar a un excel o un datatable (ya vas a saber q es un datatable jajajaja) */
+  #section {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+  }
+
+  /* aca establezco estilos compartidos: separados por coma, podes establecer a distintos elementos al mismo tiempo el mismo estilo compartido */
+
+  #section h2,
+  #section p {
+    border-radius: 10px;
+    border: 1px solid red;
+    margin: 10px;
+    text-align: center;
+    align-self: center;
+  }
+
+
+  /* de los section que contengan li, establezco un estilo distinto a cada hijo, con cosas especificas */
+  section li:nth-child(1) {
+    border: 1px solid gray;
+  }
+
+  /* background-image permite poner un fondo a cualquier elemento que se muestre, como div, li, section, header, etc (no se puede aplicar a texto, por ejemplo h1 al h6, p, entre otros) */
+  section li:nth-child(2) {
+    background-image: url('https://i.redd.it/foto-de-perfil-y-banner-de-boca-papa-v0-smk5xlrlikmc1.png?width=1600&format=png&auto=webp&s=d2dc3b0913c002dedcf560ed8d34f0654cd1b457');
+    height: 400px;
+    background-size: contain;
+  }
+
+  section li:last-child {
+    border: 3px dashed blue;
+  }
+
+  /* aca establezco un padding distinto dependiendo del tipo de input (text es el primero que pide nombre, el segundo es tipo email) */
+  input[type=text] {
+    padding: 20px;
+  }
+
+  input[type=email] {
+    padding: 50px;
+  }
+
+  /* establezco borde redondeado a todos los input dentro del form */
+  form input {
+    border-radius: 12px;
+  }
+
+
 </style>
 
